@@ -172,10 +172,10 @@ namespace Test
 
                 adapter.InsertCommand = new NpgsqlCommand(
                     $"""
-            INSERT INTO {tableName} (nickname, first_name, last_name, age)
-            VALUES (@nick, @fname, @lname, @age)
-            RETURNING id
-            """, conn);
+                    INSERT INTO {tableName} (nickname, first_name, last_name, age)
+                    VALUES (@nick, @fname, @lname, @age)
+                    RETURNING id
+                    """, conn);
                 adapter.InsertCommand.Transaction = transaction;
 
                 adapter.InsertCommand.Parameters.Add(new NpgsqlParameter("@nick", NpgsqlDbType.Varchar)
@@ -205,10 +205,10 @@ namespace Test
 
                 adapter.UpdateCommand = new NpgsqlCommand(
                     $"""
-            UPDATE {tableName}
-            SET nickname = @nick, first_name = @fname, last_name = @lname, age = @age
-            WHERE id = @id
-            """, conn);
+                    UPDATE {tableName}
+                    SET nickname = @nick, first_name = @fname, last_name = @lname, age = @age
+                    WHERE id = @id
+                    """, conn);
                 adapter.UpdateCommand.Transaction = transaction;
 
                 adapter.UpdateCommand.Parameters.Add(new NpgsqlParameter("@nick", NpgsqlDbType.Varchar)
@@ -242,8 +242,6 @@ namespace Test
                     SourceColumn = "Id",
                     SourceVersion = DataRowVersion.Original
                 });
-
-                // Выполняем Update
                 int affected = adapter.Update(table);
                 Console.WriteLine($"\n Успешно сохранено строк в БД: {affected}");
 
@@ -261,8 +259,6 @@ namespace Test
 
             VerifyInDatabase();
         }
-
-        // Проверка, что данные реально записаны в PostgreSQL
         static void VerifyInDatabase()
         {
             Console.WriteLine("\n=== Проверка БД отдельным запросом ===");
@@ -344,10 +340,6 @@ namespace Test
                     $"{row["last_name"],-15} - age={row["age"],-3} - [{row.RowState}]"
                 );
             }
-
-            // ✅ Убеждаемся, что в DataTable строки не изменились
-            Console.WriteLine($"\nВ исходной DataTable по-прежнему {table.Rows.Count} строк.");
-            Console.WriteLine("DataView — это только ПРЕДСТАВЛЕНИЕ, БД и DataTable не изменены.\n");
         }
 
         // ==================== ЖУРНАЛ ИЗМЕНЕНИЙ ====================
